@@ -25,12 +25,9 @@ const GiveawayCard = (giveaway: Giveaway) => {
   };
 
   return (
-    <a
+    <div
       key={giveaway.id}
       className="flex flex-col gap-2 border p-4 border-gray-500 rounded-lg bg-gradient-to-b from-white dark:from-black lg:static lg:w-96 lg:border-none lg:bg-none"
-      href={giveaway.open_giveaway_url}
-      target="_blank"
-      rel="noopener noreferrer"
     >
       <img
         className="w-full h-48 object-cover rounded-lg"
@@ -83,7 +80,7 @@ const GiveawayCard = (giveaway: Giveaway) => {
           Redeem
         </a>
       </div>
-    </a>
+    </div>
   );
 };
 

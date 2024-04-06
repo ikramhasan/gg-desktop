@@ -58,11 +58,20 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
-        "resizable": true,
+        "resizable": false,
         "title": "GG: Game Giveaways",
-        "width": 800
+        "height": 850,
+        "width": 440,
+        "visible": false,
+        "hiddenTitle": true,
+        "decorations": false,
+        "focus": false
       }
-    ]
+    ],
+    "systemTray": {
+      "iconPath": "icons/icon.png",
+      "iconAsTemplate": true,
+      "menuOnLeftClick": false
+    }
   }
 }
