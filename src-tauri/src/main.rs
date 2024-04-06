@@ -3,7 +3,9 @@ use tauri_plugin_positioner::{Position, WindowExt};
 
 fn main() {
    let quit = CustomMenuItem::new("quit".to_string(), "Quit").accelerator("Cmd+Q");
-    let system_tray_menu = SystemTrayMenu::new().add_item(quit);
+   let more_apps = CustomMenuItem::new("more_apps".to_string(), "More Apps");
+   let about_me = CustomMenuItem::new("about_me".to_string(), "About Me");
+    let system_tray_menu = SystemTrayMenu::new().add_item(quit).add_item(more_apps).add_item(about_me);
     tauri::Builder::default()
         .plugin(tauri_plugin_positioner::init())
         .system_tray(SystemTray::new().with_menu(system_tray_menu))
@@ -37,7 +39,13 @@ fn main() {
                 SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
                   "quit" => {
                       std::process::exit(0);
-                  }
+                  },
+                  "more_apps" => {
+                     open::that("https://play.google.com/store/apps/dev?id=4730273045676878035").expect("Failed to open browser");
+                  },
+                  "about_me" => {
+                     open::that("https://ikramhasan.com/").expect("Failed to open browser");
+                  },
                   _ => {}
               },
                 _ => {}
