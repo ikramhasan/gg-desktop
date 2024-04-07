@@ -1,13 +1,15 @@
 "use client";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/dialog";
 import GiveawayCard from "@/components/giveaway-card";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 export default function Home() {
   const [giveaways, setGiveaways] = useState<Giveaway[]>([]);
   const [loading, setLoading] = useState(true); // Add loading state
 
-  useEffect(() => {
+  const fetchGiveaways = useCallback(() => {
+    setLoading(true);
     fetch("/api/giveaways")
       .then((response) => response.json())
       .then((data) => {
@@ -16,6 +18,10 @@ export default function Home() {
         setLoading(false); // Set loading state to false when data is fetched
       });
   }, []);
+
+  useEffect(() => {
+    fetchGiveaways();
+  }, [fetchGiveaways]);
 
   const features = [
     "📥 Email notifications",
@@ -34,12 +40,15 @@ export default function Home() {
           Game Giveaways&nbsp;
           <a
             className="text-sm text-gray-500 hover:text-blue-500 hover:underline hover:cursor-pointer"
-            href="https:ikramhasan.com"
+            href="https://ikramhasan.com"
             target="_blank"
             rel="noopener noreferrer"
           >
             (by Ikram H.)
           </a>
+          <button onClick={fetchGiveaways} className="ml-4">
+            <ReloadIcon className="w-4 h-4" />
+          </button>
         </p>
         <div className="gap-4 p-4 mt-20 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
           {loading ? (
