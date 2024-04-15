@@ -1,5 +1,35 @@
+use core::str;
+
 use tauri::{CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu};
 use tauri_plugin_positioner::{Position, WindowExt};
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize, Debug)]
+struct Giveaway {
+    id: i32,
+    title: String,
+    description: String,
+    image: String,
+    status: String,
+    open_giveaway_url: String,
+    platforms: Option<String>,
+    end_date: Option<String>,
+    instructions: String,
+    worth: Option<String>,
+}
+
+
+#[tauri::command]
+async fn fetch_giveaways() -> Vec<Giveaway> {
+    let response = reqwest::get("https://gamerpower.com/api/giveaways")
+        .await
+        .expect("Failed to make request")
+        .json::<Vec<Giveaway>>()
+        .await
+        .expect("Failed to parse response");
+
+    response
+}
 
 fn main() {
     let quit = CustomMenuItem::new("quit".to_string(), "Quit").accelerator("Cmd+Q");
@@ -56,6 +86,7 @@ fn main() {
                 _ => {}
             }
         })
+        .invoke_handler(tauri::generate_handler![fetch_giveaways])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
