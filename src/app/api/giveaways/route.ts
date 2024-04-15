@@ -1,6 +1,8 @@
 export async function GET() {
   try {
-    const response = await fetch("https://gamerpower.com/api/giveaways");
+    const response = await fetch("https://gamerpower.com/api/giveaways", {
+      cache: "no-store",
+    });
     const data = await response.json();
     return new Response(JSON.stringify(data), { status: 200 });
   } catch (error) {
