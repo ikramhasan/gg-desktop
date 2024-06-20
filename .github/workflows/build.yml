@@ -59,7 +59,7 @@ jobs:
         with:
           tagName: gg-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: "GG v__VERSION__"
-          releaseBody: "Use these links to download the app: <br> Windows: [link](https://github.com/ikramhasan/gg-desktop/releases/download/gg-v__VERSION__/gg___VERSION___x64-setup.exe) <br> Apple Intel: [link](https://github.com/ikramhasan/gg-desktop/releases/download/gg-v__VERSION__/gg___VERSION___x64.dmg) <br> Apple Silicon: [link]("
+          releaseBody: ""
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.settings.args }}

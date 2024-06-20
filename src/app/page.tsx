@@ -1,29 +1,20 @@
 "use client";
+
 import { Dialog, DialogContent, DialogTrigger } from "@/components/dialog";
 import GiveawayCard from "@/components/giveaway-card";
-import { useEffect, useState } from "react";
 import { getVersion } from "@tauri-apps/api/app";
-import { invoke } from "@tauri-apps/api/tauri";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { useQuery } from "react-query";
+import { fetchGiveaways } from "./libs/fetch-giveaways";
 
 export default function Home() {
-  const [giveaways, setGiveaways] = useState<Giveaway[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [version, setVersion] = useState("");
+  const {
+    isFetching: isGiveawayLoading,
+    data: giveaways,
+    refetch,
+  } = useQuery("giveaways", fetchGiveaways);
 
-  useEffect(() => {
-    setLoading(true);
-    invoke<Giveaway[]>("fetch_giveaways", { name: "Next.js" })
-      .then(function (result) {
-        setLoading(false);
-        return setGiveaways(result);
-      })
-      .catch(console.error);
-
-    getVersion().then((v) => {
-      setVersion(v);
-    });
-  }, []);
+  const { data: version } = useQuery("version", getVersion);
 
   const features = [
     "📥 Email notifications",
@@ -53,11 +44,11 @@ export default function Home() {
           </a>
           <ReloadIcon
             className="w-4 h-4 ml-4 hover:cursor-pointer"
-            onClick={() => window.location.reload()}
+            onClick={() => refetch()}
           />
         </p>
         <div className="gap-4 p-4 mt-20 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-          {loading ? (
+          {isGiveawayLoading || !giveaways ? (
             <p>Loading...</p>
           ) : giveaways.length === 0 ? (
             <p>No giveaways available</p>
